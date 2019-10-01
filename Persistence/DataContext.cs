@@ -9,6 +9,6 @@ namespace Persistence
     {
         public DataContext(DbContextOptions options) : base(options)
         {}
-        DbSet<Reminder> Reminders {get; set;}
+        public DbSet<Reminder> Reminders {get; set;}
     }
 }

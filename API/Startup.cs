@@ -12,7 +12,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Persistence;
-
+using MediatR;
+using App.Reminders;
 namespace API
 {
     public class Startup
@@ -30,6 +31,10 @@ namespace API
             opt.UseSqlite(Configuration.GetConnectionString("Default Connection"));
         });
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddCors(pol => pol.AddPolicy("Policy", p =>{
+                p.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin();
+            }));
+            services.AddMediatR(typeof(List.Handler).Assembly);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -44,6 +49,7 @@ namespace API
                 
                
             }
+            app.UseCors("Policy");
             app.UseMvc();
         }
     }
