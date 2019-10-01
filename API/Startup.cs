@@ -21,6 +21,8 @@ using App.User;
 using API.Middleware;
 using App.Interfaces;
 using Infrastructure;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 
 namespace API
 {
@@ -53,6 +55,16 @@ namespace API
             identityBuilder.AddSignInManager<SignInManager<AppUser>>();
 
             services.AddScoped<IJwtGenerator, JwtGenerator>();
+
+            var 
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(opt => {
+                opt.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = key
+                }
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
