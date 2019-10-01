@@ -14,6 +14,14 @@ using Microsoft.Extensions.Options;
 using Persistence;
 using MediatR;
 using App.Reminders;
+using Domain;
+using Microsoft.AspNetCore.Identity;
+using FluentValidation.AspNetCore;
+using App.User;
+using API.Middleware;
+using App.Interfaces;
+using Infrastructure;
+
 namespace API
 {
     public class Startup
@@ -30,11 +38,21 @@ namespace API
         {   services.AddDbContext<DataContext>(opt =>{
             opt.UseSqlite(Configuration.GetConnectionString("Default Connection"));
         });
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddMvc().AddFluentValidation(cnfg => cnfg.RegisterValidatorsFromAssemblyContaining<Login>())
+            .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
             services.AddCors(pol => pol.AddPolicy("Policy", p =>{
                 p.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin();
             }));
-            services.AddMediatR(typeof(List.Handler).Assembly);
+            services.AddMediatR(typeof(Login.Handler).Assembly);
+
+            //add the services needed for identity
+            var builder = services.AddIdentityCore<AppUser>();
+            var identityBuilder = new IdentityBuilder(builder.UserType, builder.Services);
+            identityBuilder.AddEntityFrameworkStores<DataContext>();
+            identityBuilder.AddSignInManager<SignInManager<AppUser>>();
+
+            services.AddScoped<IJwtGenerator, JwtGenerator>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -42,7 +60,8 @@ namespace API
         {
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
+                app.UseMiddleware<ErrorHandlingMiddleware>();
+                //app.UseDeveloperExceptionPage();
             }
             else
             {

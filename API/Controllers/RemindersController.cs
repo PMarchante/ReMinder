@@ -7,25 +7,17 @@ using Persistence;
 using App.Reminders;
 using MediatR;
 using Domain;
+using API.Controllers;
 
 namespace API
 {
-    [Route ("api/[controller]")]
-    [ApiController]
-    public class RemindersController : ControllerBase
+    public class RemindersController : BaseController
     {
-        private readonly IMediator _mediator;
-
-        public RemindersController (IMediator mediator)
-        {
-            _mediator = mediator;
-
-        }
-
+        
         [HttpGet]
         public async Task<ActionResult<List<Reminder>>> List ()
         {
-            return await _mediator.Send(new List.Query());
+            return await Mediator.Send(new List.Query());
         }
     }
 }
