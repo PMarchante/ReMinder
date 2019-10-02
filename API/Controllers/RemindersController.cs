@@ -19,5 +19,7 @@ namespace API
         {
             return await Mediator.Send(new List.Query());
         }
+
+        
     }
 }

@@ -7,7 +7,7 @@ using App.Interfaces;
 using Domain;
 using Microsoft.IdentityModel.Tokens;
 
-namespace Infrastructure
+namespace Infrastructure.Security
 {
     public class JwtGenerator : IJwtGenerator
     {
