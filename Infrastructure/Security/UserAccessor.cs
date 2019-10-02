@@ -20,5 +20,15 @@ namespace Infrastructure.Security
 
             return username;
         }
+
+        // public string GetCurrentUserId()
+        // {
+        //     var userId = _httpContextAccessor.HttpContext.User?.Claims?.FirstOrDefault(x =>
+        //     x.Type == ClaimTypes.
+
+        //     return username;
+        // }
+
+        
     }
 }

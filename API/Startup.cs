@@ -18,6 +18,7 @@ using System.Text;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Infrastructure.Security;
+using AutoMapper;
 
 namespace API
 {
@@ -45,7 +46,10 @@ namespace API
             services.AddCors(pol => pol.AddPolicy("Policy", p =>{
                 p.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin();
             }));
+            
+            //any class in the same project is fine to use
             services.AddMediatR(typeof(Login.Handler).Assembly);
+            services.AddAutoMapper(typeof(Login.Handler).Assembly);
 
             //add the services needed for identity
             var builder = services.AddIdentityCore<AppUser>();
@@ -56,7 +60,7 @@ namespace API
             services.AddScoped<IJwtGenerator, JwtGenerator>();
             services.AddScoped<IUserAccessor, UserAccessor>();
             
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("the key i put here"));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("the key i put here"));//change the key for production but easier here for development
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(opt => {
                 opt.TokenValidationParameters = new TokenValidationParameters

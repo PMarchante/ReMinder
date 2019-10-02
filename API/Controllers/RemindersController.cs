@@ -15,11 +15,15 @@ namespace API
     {
         
         [HttpGet]
-        public async Task<ActionResult<List<Reminder>>> List ()
+        public async Task<ActionResult<List<ReminderDTO>>> List ()
         {
             return await Mediator.Send(new List.Query());
         }
 
-        
+        [HttpPost]
+        public async Task<ActionResult<Unit>> Create(Create.Command command)
+        {
+            return await Mediator.Send(command);
+        }
     }
 }
