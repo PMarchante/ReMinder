@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
@@ -8,7 +7,6 @@ using App.Interfaces;
 using AutoMapper;
 using Domain;
 using MediatR;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 
@@ -25,12 +23,10 @@ namespace App.Reminders
         {
             private readonly DataContext _context;
             private readonly IMapper _mapper;
-            private readonly UserManager<AppUser> _userManager;
             private readonly IUserAccessor _userAccessor;
-            public Handler(DataContext context, IMapper mapper, UserManager<AppUser> userManager, IUserAccessor userAccessor)
+            public Handler(DataContext context, IMapper mapper, IUserAccessor userAccessor)
             {
                 _userAccessor = userAccessor;
-                _userManager = userManager;
                 _mapper = mapper;
                 _context = context;
             }

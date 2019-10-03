@@ -55,6 +55,9 @@ namespace App.User
                 if(await _context.Users.Where(x => x.Email == request.Email).AnyAsync())
                     throw new RestException(HttpStatusCode.BadRequest, new{email="Email is in use"});
 
+                if(await _context.Users.Where(x => x.UserName == request.Username).AnyAsync())
+                    throw new RestException(HttpStatusCode.BadRequest, new{email="Username is in use"});
+
                 var user = new AppUser
                 {
                     Email= request.Email,
