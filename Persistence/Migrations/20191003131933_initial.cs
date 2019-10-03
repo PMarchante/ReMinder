@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Persistence.Migrations
 {
-    public partial class init : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -47,7 +47,7 @@ namespace Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Reminder",
+                name: "Reminders",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
@@ -59,7 +59,7 @@ namespace Persistence.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Reminder", x => x.Id);
+                    table.PrimaryKey("PK_Reminders", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -224,7 +224,7 @@ namespace Persistence.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Reminder");
+                name: "Reminders");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

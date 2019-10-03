@@ -5,6 +5,6 @@ namespace Domain
 {
     public class AppUser : IdentityUser
     {
-        //public ICollection<Reminder> myReminders {get; set;}
+        public string Displayname { get; set; }
     }
 }

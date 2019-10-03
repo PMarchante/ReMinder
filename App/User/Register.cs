@@ -18,8 +18,9 @@ namespace App.User
     {
         public class Command : IRequest<User>
         {
-            public string Email { get; set; }
             public string Username { get; set; }
+            public string Displayname { get; set; }
+            public string Email { get; set; }
             public string Password { get; set; }
         }
 
@@ -27,6 +28,7 @@ namespace App.User
         {
             public CommandValidator ()
             {
+                RuleFor(x => x.Displayname).NotEmpty();
                 RuleFor (e => e.Email).NotEmpty ().EmailAddress ();
                 RuleFor (u => u.Username).NotEmpty ();
                 RuleFor (p => p.Password).NotEmpty ().MinimumLength(6).WithMessage("Password must be atleast 6 characters")
@@ -64,12 +66,13 @@ namespace App.User
                 {
                     return new User
                     {
+                        Username=request.Username,//this is unique
+                        Displayname=request.Displayname,
                         Email=request.Email,
-                        Username=request.Username,
                         Token= _jwtGenerator.CreateToken(user)
                     };
                 }
-                    throw new Exception("Error creating user");
+                    throw new RestException(HttpStatusCode.BadRequest, new {profile="Error creating user"});
                 
             }
         }

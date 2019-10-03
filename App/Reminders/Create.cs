@@ -55,7 +55,7 @@ namespace App.Reminders
                         UserId = user.Id
                     };
 
-                    _context.Reminder.Add(reminder);
+                    _context.Reminders.Add(reminder);
 
                     var success = await _context.SaveChangesAsync() >0;
 

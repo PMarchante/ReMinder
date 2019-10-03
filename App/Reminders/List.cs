@@ -37,7 +37,7 @@ namespace App.Reminders
             {
                 var user = await _userManager.FindByNameAsync(_userAccessor.GetCurrentUsername());
 
-                var reminderList = await _context.Reminder.Where(x => x.UserId == user.Id).ToListAsync();
+                var reminderList = await _context.Reminders.Where(x => x.UserId == user.Id).ToListAsync();
                 
                 var reminderToReturn = _mapper.Map<List<Reminder>, List<ReminderDTO>>(reminderList);
                 return reminderToReturn;
