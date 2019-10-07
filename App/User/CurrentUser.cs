@@ -30,6 +30,7 @@ namespace App.User
                 return new User
                 {
                     Username = user.UserName,
+                    Displayname = user.Displayname,
                     Token = _jwtGenerator.CreateToken(user),
                     Email= user.Email
                 };

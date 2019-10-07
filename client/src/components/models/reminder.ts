@@ -5,3 +5,7 @@ export interface IReminder {
   description: string;
   location: string;
 }
+
+export interface IReminderFormValues extends Partial<IReminder> {
+  time?: Date;
+}

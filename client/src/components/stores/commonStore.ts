@@ -20,12 +20,10 @@ export default class CommonStore {
   }
 
   @observable token: string | null = window.localStorage.getItem('jwt');
-  @observable appLoaded = false;
 
   //this will store the token we get back from the api server so we can send it up
   //with transactions to get access to stuff
   @action setToken = (token: string | null) => {
-    window.localStorage.setItem('jwt', token!);
     this.token = token;
   };
 }
