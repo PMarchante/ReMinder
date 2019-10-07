@@ -46,6 +46,7 @@ export default class UserStore {
   @action logout = () => {
     this.rootStore.commonStore.setToken(null);
     this.user = null;
+    this.rootStore.reminderStore.reminderRegistry.clear();
     history.push('/');
   };
 

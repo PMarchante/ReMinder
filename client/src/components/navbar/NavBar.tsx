@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Menu, Container, Button, Dropdown, Image } from 'semantic-ui-react';
+import { Menu, Container, Dropdown, Image } from 'semantic-ui-react';
 import { observer } from 'mobx-react-lite';
 
 import { NavLink, Link } from 'react-router-dom';
@@ -12,14 +12,20 @@ const NavBar: React.FC = () => {
   return (
     <Menu fixed='top' inverted>
       <Container>
-        <Menu.Item header as={NavLink} exact to='/'>
-          <img src='/assets/logo.png' alt='logo' style={{ marginRight: 10 }} />
+        <Menu.Item
+          header
+          as={NavLink}
+          exact
+          to='/'
+          style={{ color: '#F2F4CB', fontSize: '20px' }}>
           ReMinder
         </Menu.Item>
         {user && (
           <Menu.Item position='right'>
-            <Image avatar spaced='right' src={'/assets/user.png'} />
-            <Dropdown pointing='top left' text={user.displayname}>
+            <Dropdown
+              pointing='top left'
+              style={{ color: '#F2F4CB', fontSize: '15px' }}
+              text={user.displayname}>
               <Dropdown.Menu>
                 <Dropdown.Item onClick={logout} text='Logout' icon='power' />
               </Dropdown.Menu>

@@ -14,7 +14,7 @@ const ActivityDashboard: React.FC = () => {
 
   return (
     <Grid>
-      <Grid.Column width={10}>
+      <Grid.Column width={4}>
         <ReminderList />
       </Grid.Column>
     </Grid>
