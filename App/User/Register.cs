@@ -61,7 +61,8 @@ namespace App.User
                 var user = new AppUser
                 {
                     Email= request.Email,
-                    UserName = request.Username
+                    UserName = request.Username,
+                    Displayname = request.Displayname
                 };
                 var result = await _userManager.CreateAsync(user, request.Password);
                 

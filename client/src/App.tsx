@@ -1,22 +1,16 @@
-import React from 'react';
+import React, { Fragment } from 'react';
+import HomePage from './components/HomePage';
+import ModalContainer from './components/modals/ModalContainer';
+import { withRouter, Route } from 'react-router';
+import { observer } from 'mobx-react-lite';
 
 const App: React.FC = () => {
   return (
-    <div className='App'>
-      <header className='App-header'>
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className='App-link'
-          href='https://reactjs.org'
-          target='_blank'
-          rel='noopener noreferrer'>
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Fragment>
+      <ModalContainer />
+      <Route exact path='/' component={HomePage} />
+    </Fragment>
   );
 };
 
-export default App;
+export default withRouter(observer(App));
