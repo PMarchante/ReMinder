@@ -1,0 +1,12 @@
+.mainpage{
+    background-color:transparent;
+    background-image: url('../../assets/reminder.png');
+    background-repeat: no-repeat;
+    background-attachment: scroll;
+    background-position: 50% 50%;
+    
+}
+
+body{
+    background-color: rgb(255, 255, 255) !important;
+}

@@ -1,16 +1,16 @@
 import React, { useContext, Fragment } from 'react';
-import { Container, Segment, Header, Button } from 'semantic-ui-react';
+import { Container, Header, Button } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import LoginForm from './users/LoginForm';
 import RegisterForm from './users/RegisterForm';
 import { RootStoreContext } from './stores/rootStore';
-
+import '../components/css/homepage.css';
 const HomePage = () => {
   const rootStore = useContext(RootStoreContext);
   const { isLoggedIn, user } = rootStore.userStore;
   const { openModel } = rootStore.modalStore;
   return (
-    <Segment inverted textAlign='center'>
+    <Container textAlign='center' style={{ marginTop: '350px' }}>
       <Container text>
         {isLoggedIn && user ? (
           <Fragment>
@@ -25,25 +25,21 @@ const HomePage = () => {
           </Fragment>
         ) : (
           <Fragment>
-            <Header as='h2' inverted content='Welcome to ReMinder' />
-            <Button
-              onClick={() => openModel(<LoginForm />)}
-              size='huge'
-              inverted>
+            <Header as='h2' content='Welcome to ReMinder' />
+            <Button onClick={() => openModel(<LoginForm />)} size='huge'>
               Login
             </Button>
             <Button
               onClick={() => {
                 openModel(<RegisterForm />);
               }}
-              size='huge'
-              inverted>
+              size='huge'>
               Sign up!
             </Button>
           </Fragment>
         )}
       </Container>
-    </Segment>
+    </Container>
   );
 };
 

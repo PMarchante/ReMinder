@@ -18,6 +18,7 @@ export default class ReminderStore {
   @observable submitting = false;
   @observable target = '';
   @observable loading = false;
+  @observable change = true;
 
   @computed get remindersByDate() {
     //activityRegistry is NOT an array so passing it like this lets us treat it as one
@@ -37,6 +38,7 @@ export default class ReminderStore {
           reminders[date] = reminders[date]
             ? [...reminders[date], reminder]
             : [reminder];
+
           return reminders;
         },
         {} as { [key: string]: IReminder[] }
@@ -54,6 +56,7 @@ export default class ReminderStore {
           setReminderProps(reminder, this.rootStore.userStore.user!);
           this.reminderRegistry.set(reminder.id, reminder);
         });
+        this.reminder = reminders[0];
       });
     } catch (error) {
       runInAction('loading reminders error', () => {
@@ -62,8 +65,14 @@ export default class ReminderStore {
     }
   };
 
-  @action clearActivity = () => {
+  @action clearReminder = () => {
     this.reminder = null;
+  };
+
+  @action selectReminder = (id: string) => {
+    runInAction(() => {
+      this.reminder = this.reminderRegistry.get(id);
+    });
   };
 
   // @action createActivity = async (activity: IActivity) => {

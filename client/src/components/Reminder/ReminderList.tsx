@@ -1,4 +1,4 @@
-import React, { useContext, Fragment } from 'react';
+import React, { useContext } from 'react';
 import { Item, Container, Header, List } from 'semantic-ui-react';
 import { observer } from 'mobx-react-lite';
 import { RootStoreContext } from '../stores/rootStore';
@@ -13,7 +13,7 @@ const ReminderList: React.FC = () => {
       <Header content='Coming up' style={{ color: '#8CADA7' }} size='huge' />
       {remindersByDate.map(([group, reminders]) => (
         <Container key={group}>
-          <Item.Group divided>
+          <Item.Group>
             {reminders.map((reminder) => (
               <ReminderListItem key={reminder.id} reminder={reminder} />
             ))}
