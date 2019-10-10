@@ -3,7 +3,8 @@ import { Grid } from 'semantic-ui-react';
 import { observer } from 'mobx-react-lite';
 import { RootStoreContext } from '../stores/rootStore';
 import ReminderList from './ReminderList';
-import ReminderDetail from './ReminderDetail';
+
+import MyCalendar from './MyCalendar';
 
 const ActivityDashboard: React.FC = () => {
   const rootStore = useContext(RootStoreContext);
@@ -18,9 +19,7 @@ const ActivityDashboard: React.FC = () => {
       <Grid.Column width={4}>
         <ReminderList />
       </Grid.Column>
-      <Grid.Column width={6}>
-        {reminder && <ReminderDetail reminder={reminder} />}
-      </Grid.Column>
+      <Grid.Column width={12}>{reminder && <MyCalendar />}</Grid.Column>
     </Grid>
   );
 };

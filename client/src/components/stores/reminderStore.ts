@@ -3,6 +3,7 @@ import { IReminder } from '../models/reminder';
 import agent from '../api/agent';
 import { RootStore } from './rootStore';
 import { setReminderProps } from '../util/helpers';
+import moment from 'moment';
 
 export default class ReminderStore {
   rootStore: RootStore;
@@ -54,6 +55,9 @@ export default class ReminderStore {
       runInAction('loading reminders', () => {
         reminders.forEach((reminder) => {
           setReminderProps(reminder, this.rootStore.userStore.user!);
+          reminder.start = Date.now();
+          reminder.end = Date.now();
+
           this.reminderRegistry.set(reminder.id, reminder);
         });
         this.reminder = reminders[0];
