@@ -1,8 +1,8 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Portal, Segment, Button, Form } from 'semantic-ui-react';
 import TextInput from '../form/TextInput';
 import { Form as FinalForm, Field } from 'react-final-form';
-import { ReminderFormValues } from '../models/reminder';
+import { ReminderFormValues, IReminder } from '../models/reminder';
 import {
   combineValidators,
   isRequired,
@@ -14,6 +14,7 @@ import { v4 as uuid } from 'uuid';
 import { RootStoreContext } from '../stores/rootStore';
 import DateInput from '../form/DateInput';
 import TextAreaInput from '../form/TextAreaInput';
+import { observer } from 'mobx-react-lite';
 
 interface IProps {
   open: boolean;
@@ -32,6 +33,18 @@ const CreateReminder: React.FC<IProps> = ({ open, setOpen }) => {
     date: isRequired('Date'),
     time: isRequired('Time')
   });
+  const rootStore = useContext(RootStoreContext);
+  const {
+    createReminder,
+    editReminder,
+    selectedReminder
+  } = rootStore.reminderStore;
+  const [reminder, setReminder] = useState(new ReminderFormValues());
+
+  useEffect(() => {
+    if (selectedReminder)
+      setReminder(new ReminderFormValues(selectedReminder!));
+  }, [selectedReminder]);
 
   const handleFinalFormSubmit = (values: any) => {
     const dateAndTime = combineDateAndTime(values.date, values.time);
@@ -43,17 +56,12 @@ const CreateReminder: React.FC<IProps> = ({ open, setOpen }) => {
         ...reminder,
         id: uuid()
       };
-      //console.log('ok');
+
       createReminder(newReminder);
     } else {
-      console.log('edit');
-      //editActivity(activity)
+      editReminder(reminder);
     }
   };
-
-  const rootStore = useContext(RootStoreContext);
-  const { createReminder } = rootStore.reminderStore;
-  const [reminder] = useState(new ReminderFormValues());
 
   return (
     <Portal open={open}>
@@ -110,7 +118,11 @@ const CreateReminder: React.FC<IProps> = ({ open, setOpen }) => {
               />
 
               <Button.Group widths={2}>
-                <Button content='create' positive type='submit' />
+                <Button
+                  content={reminder.id ? 'Edit' : 'Create'}
+                  positive
+                  type='submit'
+                />
                 <Button
                   content='Cancel'
                   negative
@@ -125,4 +137,4 @@ const CreateReminder: React.FC<IProps> = ({ open, setOpen }) => {
   );
 };
 
-export default CreateReminder;
+export default observer(CreateReminder);

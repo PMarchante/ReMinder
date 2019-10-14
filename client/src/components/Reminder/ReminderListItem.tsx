@@ -5,7 +5,13 @@ import { IReminder } from '../models/reminder';
 import { RootStoreContext } from '../stores/rootStore';
 import { observer } from 'mobx-react-lite';
 
-const ReminderListItem: React.FC<{ reminder: IReminder }> = ({ reminder }) => {
+interface IProps {
+  reminder: IReminder;
+  setOpen: (b: boolean) => void;
+  open: boolean;
+}
+
+const ReminderListItem: React.FC<IProps> = ({ reminder, setOpen, open }) => {
   const rootStore = useContext(RootStoreContext);
   const { selectReminder } = rootStore.reminderStore;
 
@@ -14,6 +20,7 @@ const ReminderListItem: React.FC<{ reminder: IReminder }> = ({ reminder }) => {
       <List.Item
         onClick={() => {
           selectReminder(reminder.id);
+          setOpen(!open);
         }}>
         <List.Content>
           <List.Header as='h3'>{reminder.title}</List.Header>

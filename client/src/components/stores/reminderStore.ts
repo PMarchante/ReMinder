@@ -19,7 +19,7 @@ export default class ReminderStore {
   @observable target = '';
   @observable loading = false;
   @observable change = true;
-
+  @observable selectedReminder: IReminder | undefined;
   @computed get remindersByDate() {
     //activityRegistry is NOT an array so passing it like this lets us treat it as one
     return this.groupRemindersByDate(
@@ -47,12 +47,19 @@ export default class ReminderStore {
   }
 
   @action getReminders = () => {
-    this.reminderRegistry.forEach((reminder) => {
-      this.reminders.push(reminder);
+    runInAction(() => {
+      this.reminderRegistry.forEach((reminder) => {
+        this.reminders.push(reminder);
+      });
     });
     return this.reminders;
   };
 
+  @action getSelected = () => {
+    runInAction(() => {
+      return this.selectedReminder;
+    });
+  };
   //this method makes an async call with axios to get the list of activities from the api
   //it then formats the dates and sets the loading indicators on and off
   @action loadReminders = async () => {
@@ -74,14 +81,14 @@ export default class ReminderStore {
     }
   };
 
-  @action clearReminder = () => {
-    this.reminder = null;
-  };
-
   @action selectReminder = (id: string) => {
     runInAction(() => {
-      this.reminder = this.reminderRegistry.get(id);
+      this.selectedReminder = this.reminderRegistry.get(id);
     });
+    return this.selectedReminder;
+  };
+  @action clearReminder = () => {
+    this.selectedReminder = undefined;
   };
 
   @action createReminder = async (reminder: IReminder) => {
@@ -97,24 +104,19 @@ export default class ReminderStore {
     }
   };
 
-  // @action editReminder = async (reminder: IReminder) => {
-  //   try {
-  //     await agent.Reminders.update(reminder);
-  //     runInAction('editing activity', () => {
-  //       this.activityRegistry.set(activity.id, activity);
-  //       this.activity = activity;
-
-  //       this.submitting = false;
-  //     });
-  //     history.push(`/activities/${activity.id}`);
-  //   } catch (error) {
-  //     runInAction('error editing activity', () => {
-  //       toast.error('error submitting activity');
-  //       console.log(error.response);
-  //       this.submitting = false;
-  //     });
-  //   }
-  // };
+  @action editReminder = async (reminder: IReminder) => {
+    try {
+      await agent.Reminders.update(reminder);
+      runInAction('editing reminder', () => {
+        this.reminderRegistry.set(reminder.id, reminder);
+        this.reminder = reminder;
+      });
+    } catch (error) {
+      runInAction('error editing activity', () => {
+        console.log(error.response);
+      });
+    }
+  };
 
   // @action deleteActivity = async (
   //   event: SyntheticEvent<HTMLButtonElement>,

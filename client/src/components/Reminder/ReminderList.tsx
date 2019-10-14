@@ -7,7 +7,7 @@ import CreateReminder from './CreateReminder';
 
 const ReminderList: React.FC = () => {
   const rootStore = useContext(RootStoreContext);
-  const { remindersByDate } = rootStore.reminderStore;
+  const { remindersByDate, clearReminder } = rootStore.reminderStore;
   const [open, setOpen] = useState(false);
   return (
     <Container>
@@ -16,7 +16,12 @@ const ReminderList: React.FC = () => {
         <Container key={group}>
           <Item.Group>
             {reminders.map((reminder) => (
-              <ReminderListItem key={reminder.id} reminder={reminder} />
+              <ReminderListItem
+                key={reminder.id}
+                reminder={reminder}
+                setOpen={setOpen}
+                open={open}
+              />
             ))}
           </Item.Group>
         </Container>
@@ -26,6 +31,7 @@ const ReminderList: React.FC = () => {
         <List.Item
           onClick={() => {
             setOpen(!open);
+            clearReminder();
           }}>
           <List.Content>
             <List.Header as='h3'>New +</List.Header>
