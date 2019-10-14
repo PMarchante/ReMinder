@@ -3,7 +3,6 @@ import { IReminder } from '../models/reminder';
 import agent from '../api/agent';
 import { RootStore } from './rootStore';
 import { setReminderProps } from '../util/helpers';
-import moment from 'moment';
 
 export default class ReminderStore {
   rootStore: RootStore;
@@ -12,7 +11,7 @@ export default class ReminderStore {
     this.rootStore = rootStore;
   }
 
-  @observable reminderRegistry = new Map(); //this is a mobx function that gives us more functionality when iterating
+  @observable reminderRegistry = new Map();
   @observable reminders: IReminder[] = [];
   @observable loadingInitial = false;
   @observable reminder: IReminder | null = null;
@@ -47,6 +46,13 @@ export default class ReminderStore {
     );
   }
 
+  @action getReminders = () => {
+    this.reminderRegistry.forEach((reminder) => {
+      this.reminders.push(reminder);
+    });
+    return this.reminders;
+  };
+
   //this method makes an async call with axios to get the list of activities from the api
   //it then formats the dates and sets the loading indicators on and off
   @action loadReminders = async () => {
@@ -55,9 +61,8 @@ export default class ReminderStore {
       runInAction('loading reminders', () => {
         reminders.forEach((reminder) => {
           setReminderProps(reminder, this.rootStore.userStore.user!);
-          reminder.start = Date.now();
-          reminder.end = Date.now();
-
+          reminder.start = reminder.date;
+          reminder.end = reminder.date;
           this.reminderRegistry.set(reminder.id, reminder);
         });
         this.reminder = reminders[0];
@@ -79,35 +84,22 @@ export default class ReminderStore {
     });
   };
 
-  // @action createActivity = async (activity: IActivity) => {
-  //   this.submitting = true;
-  //   try {
-  //     await agent.Activities.create(activity);
-  //     const attendee = createAttendee(this.rootStore.userStore.user!);
-  //     attendee.isHost = true;
-  //     let attendees = [];
-  //     attendees.push(attendee);
-  //     activity.attendees = attendees;
-  //     activity.isHost = true;
-  //     runInAction('creating activity', () => {
-  //       this.activityRegistry.set(activity.id, activity);
+  @action createReminder = async (reminder: IReminder) => {
+    try {
+      await agent.Reminders.create(reminder);
+      runInAction('creating activity', () => {
+        this.reminderRegistry.set(reminder.id, reminder);
+      });
+    } catch (error) {
+      runInAction('error creating reminder', () => {
+        console.log(error.response);
+      });
+    }
+  };
 
-  //       this.submitting = false;
-  //     });
-  //     history.push(`/activities/${activity.id}`);
-  //   } catch (error) {
-  //     runInAction('error creating activity', () => {
-  //       toast.error('error submitting activity');
-  //       console.log(error.response);
-  //       this.submitting = false;
-  //     });
-  //   }
-  // };
-
-  // @action editActivity = async (activity: IActivity) => {
-  //   this.submitting = true;
+  // @action editReminder = async (reminder: IReminder) => {
   //   try {
-  //     await agent.Activities.update(activity);
+  //     await agent.Reminders.update(reminder);
   //     runInAction('editing activity', () => {
   //       this.activityRegistry.set(activity.id, activity);
   //       this.activity = activity;

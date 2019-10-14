@@ -1,10 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
+import 'react-widgets/dist/css/react-widgets.css';
 import { Router } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
 import * as serviceWorker from './serviceWorker';
-
+import dateFnsLocalizer from 'react-widgets-date-fns';
+dateFnsLocalizer();
 export const history = createBrowserHistory();
 
 ReactDOM.render(

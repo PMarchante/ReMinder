@@ -3,8 +3,8 @@ import { Grid } from 'semantic-ui-react';
 import { observer } from 'mobx-react-lite';
 import { RootStoreContext } from '../stores/rootStore';
 import ReminderList from './ReminderList';
-
 import MyCalendar from './MyCalendar';
+import LoadingComponent from '../util/LoadingComponent';
 
 const ActivityDashboard: React.FC = () => {
   const rootStore = useContext(RootStoreContext);
@@ -14,6 +14,7 @@ const ActivityDashboard: React.FC = () => {
     loadReminders();
   }, [loadReminders]); //this array is a dependency array we have to put all out dependecies used in here
 
+  if (!reminder) return <LoadingComponent content='Loading' />;
   return (
     <Grid>
       <Grid.Column width={4}>

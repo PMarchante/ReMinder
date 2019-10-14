@@ -35,8 +35,8 @@ const Reminders = {
   list: (): Promise<IReminder[]> => requests.get('/reminder'),
   detail: (id: string) => requests.get(`/reminder${id}`),
   create: (reminder: IReminder) => requests.post('/reminder', reminder),
-  update: (id: string, reminder: IReminder) =>
-    requests.put(`/reminder/${id}`, reminder),
+  update: (reminder: IReminder) =>
+    requests.put(`/reminder/${reminder.id}`, reminder),
   delete: (id: string) => requests.del(`/reminder${id}`)
 };
 
