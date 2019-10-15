@@ -4,11 +4,15 @@ import { observer } from 'mobx-react-lite';
 import { RootStoreContext } from '../stores/rootStore';
 import ReminderListItem from './ReminderListItem';
 import CreateReminder from './CreateReminder';
+import { IReminder } from '../models/reminder';
 
 const ReminderList: React.FC = () => {
   const rootStore = useContext(RootStoreContext);
-  const { remindersByDate, clearReminder } = rootStore.reminderStore;
+  const { remindersByDate } = rootStore.reminderStore;
   const [open, setOpen] = useState(false);
+  const [selectedReminder, setSelectedReminder] = useState<
+    IReminder | undefined
+  >(undefined);
   return (
     <Container>
       <Header content='Coming up' style={{ color: '#8CADA7' }} size='huge' />
@@ -21,6 +25,7 @@ const ReminderList: React.FC = () => {
                 reminder={reminder}
                 setOpen={setOpen}
                 open={open}
+                setSelectedReminder={setSelectedReminder}
               />
             ))}
           </Item.Group>
@@ -31,14 +36,18 @@ const ReminderList: React.FC = () => {
         <List.Item
           onClick={() => {
             setOpen(!open);
-            clearReminder();
+            setSelectedReminder(undefined);
           }}>
           <List.Content>
             <List.Header as='h3'>New +</List.Header>
           </List.Content>
         </List.Item>
       </List>
-      <CreateReminder open={open} setOpen={setOpen} />
+      <CreateReminder
+        open={open}
+        setOpen={setOpen}
+        selectedReminder={selectedReminder}
+      />
     </Container>
   );
 };

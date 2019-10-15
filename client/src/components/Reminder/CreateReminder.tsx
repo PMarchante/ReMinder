@@ -19,9 +19,14 @@ import { observer } from 'mobx-react-lite';
 interface IProps {
   open: boolean;
   setOpen: (b: boolean) => void;
+  selectedReminder: IReminder | undefined;
 }
 
-const CreateReminder: React.FC<IProps> = ({ open, setOpen }) => {
+const CreateReminder: React.FC<IProps> = ({
+  open,
+  setOpen,
+  selectedReminder
+}) => {
   const validate = combineValidators({
     title: isRequired({ message: 'event title is required' }),
     description: composeValidators(
@@ -34,16 +39,11 @@ const CreateReminder: React.FC<IProps> = ({ open, setOpen }) => {
     time: isRequired('Time')
   });
   const rootStore = useContext(RootStoreContext);
-  const {
-    createReminder,
-    editReminder,
-    selectedReminder
-  } = rootStore.reminderStore;
+  const { createReminder, editReminder } = rootStore.reminderStore;
   const [reminder, setReminder] = useState(new ReminderFormValues());
 
   useEffect(() => {
-    if (selectedReminder)
-      setReminder(new ReminderFormValues(selectedReminder!));
+    setReminder(new ReminderFormValues(selectedReminder!));
   }, [selectedReminder]);
 
   const handleFinalFormSubmit = (values: any) => {
@@ -56,7 +56,6 @@ const CreateReminder: React.FC<IProps> = ({ open, setOpen }) => {
         ...reminder,
         id: uuid()
       };
-
       createReminder(newReminder);
     } else {
       editReminder(reminder);

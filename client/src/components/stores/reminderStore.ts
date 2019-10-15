@@ -55,15 +55,9 @@ export default class ReminderStore {
     return this.reminders;
   };
 
-  @action getSelected = () => {
-    runInAction(() => {
-      return this.selectedReminder;
-    });
-  };
-  //this method makes an async call with axios to get the list of activities from the api
-  //it then formats the dates and sets the loading indicators on and off
   @action loadReminders = async () => {
     try {
+      this.loading = true;
       const reminders = await agent.Reminders.list();
       runInAction('loading reminders', () => {
         reminders.forEach((reminder) => {
@@ -74,21 +68,13 @@ export default class ReminderStore {
         });
         this.reminder = reminders[0];
       });
+      this.loading = false;
     } catch (error) {
       runInAction('loading reminders error', () => {
         console.log(error);
+        this.loading = false;
       });
     }
-  };
-
-  @action selectReminder = (id: string) => {
-    runInAction(() => {
-      this.selectedReminder = this.reminderRegistry.get(id);
-    });
-    return this.selectedReminder;
-  };
-  @action clearReminder = () => {
-    this.selectedReminder = undefined;
   };
 
   @action createReminder = async (reminder: IReminder) => {
@@ -118,25 +104,15 @@ export default class ReminderStore {
     }
   };
 
-  // @action deleteActivity = async (
-  //   event: SyntheticEvent<HTMLButtonElement>,
-  //   id: string
-  // ) => {
-  //   this.submitting = true;
-  //   this.target = event.currentTarget.name;
-  //   try {
-  //     await agent.Activities.delete(id);
-  //     runInAction('deleting activity', () => {
-  //       this.activityRegistry.delete(id);
-  //       this.submitting = false;
-  //       this.target = '';
-  //     });
-  //   } catch (error) {
-  //     console.log(error);
-  //     runInAction('error deleting activity', () => {
-  //       this.submitting = false;
-  //       this.target = '';
-  //     });
-  //   }
-  // };
+  @action deleteReminder = async (reminder: IReminder) => {
+    try {
+      await agent.Reminders.delete(reminder.id);
+      runInAction('deleting activity', () => {
+        this.reminderRegistry.delete(reminder.id);
+      });
+    } catch (error) {
+      console.log(error);
+      runInAction('error deleting activity', () => {});
+    }
+  };
 }

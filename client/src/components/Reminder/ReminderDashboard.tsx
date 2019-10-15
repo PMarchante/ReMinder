@@ -8,19 +8,19 @@ import LoadingComponent from '../util/LoadingComponent';
 
 const ActivityDashboard: React.FC = () => {
   const rootStore = useContext(RootStoreContext);
-  const { loadReminders, reminder, getReminders } = rootStore.reminderStore;
+  const { loadReminders, loading } = rootStore.reminderStore;
 
   useEffect(() => {
     loadReminders();
-    getReminders();
-  }, [loadReminders, getReminders]); //this array is a dependency array we have to put all out dependecies used in here
+  }, [loadReminders]);
 
+  if (loading) return <LoadingComponent content='Loading' />;
   return (
     <Grid>
       <Grid.Column width={4}>
         <ReminderList />
       </Grid.Column>
-      <Grid.Column width={12}>{reminder && <MyCalendar />}</Grid.Column>
+      <Grid.Column width={12}>{!loading && <MyCalendar />}</Grid.Column>
     </Grid>
   );
 };

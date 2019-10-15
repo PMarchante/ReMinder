@@ -37,7 +37,7 @@ const Reminders = {
   create: (reminder: IReminder) => requests.post('/reminder', reminder),
   update: (reminder: IReminder) =>
     requests.put(`/reminder/${reminder.id}`, reminder),
-  delete: (id: string) => requests.del(`/reminder${id}`)
+  delete: (id: string) => requests.del(`/reminder/${id}`)
 };
 
 export default { User, Reminders };

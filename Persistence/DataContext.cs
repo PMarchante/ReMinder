@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using Domain;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -15,6 +16,11 @@ namespace Persistence
         protected override void OnModelCreating(ModelBuilder builder){
             base.OnModelCreating(builder);
 
+        }
+
+        public Task singleordefault()
+        {
+            throw new NotImplementedException();
         }
     }
 }
