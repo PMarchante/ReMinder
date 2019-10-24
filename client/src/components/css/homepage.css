@@ -1,12 +1,11 @@
 .mainpage{
-    background-color:transparent;
-    background-image: url('../../assets/reminder.png');
-    background-repeat: no-repeat;
-    background-attachment: scroll;
-    background-position: 50% 50%;
-    
+    background: url("../../assets/business-mobile-contracts.jpg") no-repeat center center fixed;
+    background-size: cover;
+    height: 100vh;
+    overflow: hidden;
 }
 
 body{
     background-color: rgb(255, 255, 255) !important;
+   
 }

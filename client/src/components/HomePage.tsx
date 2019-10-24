@@ -1,17 +1,25 @@
 import React, { useContext, Fragment } from 'react';
-import { Container, Header, Button } from 'semantic-ui-react';
+import { Container, Header, Button, Image } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import LoginForm from './users/LoginForm';
 import RegisterForm from './users/RegisterForm';
 import { RootStoreContext } from './stores/rootStore';
 import '../components/css/homepage.css';
+
 const HomePage = () => {
   const rootStore = useContext(RootStoreContext);
   const { isLoggedIn, user } = rootStore.userStore;
   const { openModel } = rootStore.modalStore;
   return (
-    <Container textAlign='center' style={{ marginTop: '350px' }}>
-      <Container text>
+    <div className='mainpage'>
+      <Container
+        text
+        style={{
+          textAlign: 'center',
+          position: 'absolute',
+          top: '43%',
+          left: '22%'
+        }}>
         {isLoggedIn && user ? (
           <Fragment>
             <Header
@@ -19,27 +27,38 @@ const HomePage = () => {
               inverted
               content={`Welcome back ${user.displayname}`}
             />
-            <Button as={Link} to='/reminder' size='huge' inverted>
-              Go to reminders
-            </Button>
+            <Button
+              as={Link}
+              to='/reminder'
+              size='huge'
+              inverted
+              content='Go to reminders'
+              color='blue'
+            />
           </Fragment>
         ) : (
           <Fragment>
             <Header as='h2' content='Welcome to ReMinder' />
-            <Button onClick={() => openModel(<LoginForm />)} size='huge'>
-              Login
-            </Button>
+
             <Button
+              onClick={() => openModel(<LoginForm />)}
+              size='huge'
+              content='Login'
+              color='blue'
+            />
+
+            <Button
+              color='blue'
+              content='Sign up!'
               onClick={() => {
                 openModel(<RegisterForm />);
               }}
-              size='huge'>
-              Sign up!
-            </Button>
+              size='huge'
+            />
           </Fragment>
         )}
       </Container>
-    </Container>
+    </div>
   );
 };
 

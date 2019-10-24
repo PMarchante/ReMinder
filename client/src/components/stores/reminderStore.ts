@@ -68,6 +68,7 @@ export default class ReminderStore {
         });
         this.reminder = reminders[0];
       });
+
       this.loading = false;
     } catch (error) {
       runInAction('loading reminders error', () => {
